@@ -1,0 +1,14 @@
+{
+  "/api": {
+    "target": "http://localhost:4420",
+    "secure": false
+  },
+  "/ws": {
+    "target": "ws://localhost:4420",
+    "ws": true
+  },
+  "/debug-mcp": {
+    "target": "http://localhost:4420",
+    "secure": false
+  }
+}

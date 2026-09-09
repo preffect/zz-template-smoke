@@ -1,0 +1,46 @@
+http:
+  routers:
+    zz-template-smoke-api:
+      rule: "Host(`zz-template-smoke.preffect-ha.preffect-home.net`) && PathPrefix(`/api`)"
+      entryPoints: [websecure]
+      service: zz-template-smoke-api
+      tls:
+        certResolver: cloudflare
+      priority: 100
+
+    zz-template-smoke-ws:
+      rule: "Host(`zz-template-smoke.preffect-ha.preffect-home.net`) && PathPrefix(`/ws`)"
+      entryPoints: [websecure]
+      service: zz-template-smoke-api
+      tls:
+        certResolver: cloudflare
+      priority: 100
+
+    # OPTIONAL: only if you want the MCP debug endpoint reachable remotely.
+    # Otherwise leave commented — debug-mcp is normally used over localhost.
+    # zz-template-smoke-mcp:
+    #   rule: "Host(`zz-template-smoke.preffect-ha.preffect-home.net`) && PathPrefix(`/debug-mcp`)"
+    #   entryPoints: [websecure]
+    #   service: zz-template-smoke-api
+    #   tls:
+    #     certResolver: cloudflare
+    #   priority: 100
+
+    zz-template-smoke:
+      rule: "Host(`zz-template-smoke.preffect-ha.preffect-home.net`)"
+      entryPoints: [websecure]
+      service: zz-template-smoke
+      tls:
+        certResolver: cloudflare
+
+  services:
+    zz-template-smoke:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:4422"
+
+    zz-template-smoke-api:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:4420"
+
